@@ -22,7 +22,7 @@ import java.util.List;
 public class OrderController {
 
     //private static final String PAYMENT_URL = "http://localhost:8001";
-    private static final String PAYMENT_URL = "http://CLOUD-PAYMENT-SERVICE";
+    private static final String PAYMENT_URL = "http://cloud-payment-service";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -68,5 +68,11 @@ public class OrderController {
         String result = restTemplate.getForObject(uri+"/payment/lb",String.class);
         log.info(result);
         return result;
+    }
+
+    @GetMapping("/consumer/payment/zipkin")
+    public String consumerZipkin(){
+        String result = restTemplate.getForObject("http://localhost:8001/payment/zipkin",String.class);
+        return result+" from consumer";
     }
 }

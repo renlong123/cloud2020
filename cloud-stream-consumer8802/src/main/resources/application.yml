@@ -1,0 +1,45 @@
+server:
+  port: 8802
+
+spring:
+  application:
+    name: cloud-stream-consumer
+  cloud:
+    stream:
+      binders:
+        defaultRabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: 192.168.1.104
+                port: 5672
+                username: guest
+                password: guest
+      bindings:
+        input:   #接收进行消费
+          destination: studyExchange
+          content-type: application/json
+          binder: defaultRabbit
+          #group: springcloudA
+
+management:
+  health:
+    rabbit:
+      enabled: false
+
+eureka:
+  instance:
+    instance-id: receive-8802.com
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 2
+    lease-expiration-duration-in-seconds: 5
+  client:
+    register-with-eureka: true     #false表示不向注册中心注册自己。
+    fetch-registry: true     #false表示自己端就是注册中心，我的职责就是维护服务实例，并不需要去检索服务
+    service-url:
+      #集群指向其它eureka
+      #defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/
+      #注册中心地址
+      defaultZone: http://localhost:7001/eureka/
+
